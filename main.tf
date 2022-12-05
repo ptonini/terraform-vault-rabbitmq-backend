@@ -4,7 +4,6 @@ resource "random_password" "this" {
 }
 
 resource "rabbitmq_user" "this" {
-  provider = rabbitmq
   name = var.username
   password = random_password.this.result
   tags = var.user_tags
