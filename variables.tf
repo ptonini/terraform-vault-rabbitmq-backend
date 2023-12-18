@@ -16,7 +16,6 @@ variable "max_lease_ttl_seconds" {
 variable "roles" {
   type = map(object({
     name    = optional(string)
-    backend = string
     tags    = optional(string)
     vhosts = optional(map(object({
       configure = string
