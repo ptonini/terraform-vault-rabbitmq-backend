@@ -4,8 +4,5 @@ terraform {
       source = "hashicorp/vault"
       version = ">= 3.11.0"
     }
-    rabbitmq = {
-      source = "cyrilgdn/rabbitmq"
-    }
   }
 }

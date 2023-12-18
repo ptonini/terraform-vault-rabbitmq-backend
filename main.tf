@@ -1,20 +1,24 @@
-resource "random_password" "this" {
-  length  = 16
-  special = false
-}
-
-resource "rabbitmq_user" "this" {
-  name = var.username
-  password = random_password.this.result
-  tags = var.user_tags
-}
-
-
 resource "vault_rabbitmq_secret_backend" "this" {
-  path = var.path
-  connection_uri = var.connection_uri
-  username = rabbitmq_user.this.name
-  password = rabbitmq_user.this.password
+  path                      = var.path
+  connection_uri            = var.connection_uri
+  username                  = var.username
+  password                  = var.password
   default_lease_ttl_seconds = var.default_lease_ttl_seconds
-  max_lease_ttl_seconds = var.max_lease_ttl_seconds
+  max_lease_ttl_seconds     = var.max_lease_ttl_seconds
+}
+
+resource "vault_rabbitmq_secret_backend_role" "this" {
+  for_each = var.roles
+  name     = coalesce(each.value.name, each.key)
+  backend  = vault_rabbitmq_secret_backend.this.path
+  tags     = each.value.tags
+  dynamic "vhost" {
+    for_each = each.value.vhosts
+    content {
+      host      = vhost.key
+      configure = vhost.value.configure
+      read      = vhost.value.read
+      write     = vhost.value.write
+    }
+  }
 }
