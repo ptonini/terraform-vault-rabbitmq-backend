@@ -21,7 +21,7 @@ variable "roles" {
       configure = string
       read      = string
       write     = string
-    })))
+    })), {})
   }))
   default = {}
   nullable = false
