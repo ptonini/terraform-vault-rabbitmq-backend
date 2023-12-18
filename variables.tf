@@ -25,4 +25,5 @@ variable "roles" {
     })))
   }))
   default = {}
+  nullable = false
 }
